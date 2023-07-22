@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stock Dividends vs. Bank Savings Interest Calculator</title>
+</head>
+<body>
+  <h1>Stock Dividends vs. Bank Savings Interest Calculator</h1>
+ 
+  <p>Enter the following values: (annually)</p>
+  <label for="sharesOwned">Number of Shares Owned:</label>
+  <input type="number" id="sharesOwned" step="1" min="0" required><br>
+
+  <label for="dividendPerShare">Stock Dividend per Share ($):</label>
+  <input type="number" id="dividendPerShare" step="0.01" min="0" required><br>
+
+  <label for="savingsAmount">Savings Amount ($):</label>
+  <input type="number" id="savingsAmount" step="0.01" min="0" required><br>
+
+  <label for="interestRate">Bank Interest Rate (%):</label>
+  <input type="number" id="interestRate" step="0.01" min="0" max="100" required><br>
+
+  <label for="incomeTaxRate">Income Tax Rate (%):</label>
+  <input type="number" id="incomeTaxRate" step="0.01" min="0" max="100" required><br>
+
+  <label for="pirTaxRate">PIR Tax Rate (%):</label>
+  <input type="number" id="pirTaxRate" step="0.01" min="0" max="100" required><br>
+
+  <button onclick="calculateComparison()">Calculate</button>
+
+  <h2>Comparison Results</h2>
+  <p id="stockDividends">Annual Stock Dividends: N/A</p>
+  <p id="pirTaxPaid">PIR Tax Paid: N/A</p>
+  <p id="stockDividendsAfterTax">After PIR Tax Stock Dividends: N/A</p>
+
+  <p id="bankInterest">Annual Bank Interest: N/A</p>
+  <p id="incomeTaxPaid">Income Tax Paid: N/A</p>
+  <p id="bankInterestAfterTax">After Income Tax Bank Interest: N/A</p>
+
+  <p id="result">Result: N/A</p>
+
+  <script>
+    function calculateComparison() {
+      // Get input values
+      const sharesOwned = parseInt(document.getElementById('sharesOwned').value);
+      const dividendPerShare = parseFloat(document.getElementById('dividendPerShare').value);
+      const savingsAmount = parseFloat(document.getElementById('savingsAmount').value);
+      const interestRate = parseFloat(document.getElementById('interestRate').value) / 100;
+      const incomeTaxRate = parseFloat(document.getElementById('incomeTaxRate').value) / 100;
+      const pirTaxRate = parseFloat(document.getElementById('pirTaxRate').value) / 100;
+
+      // Calculate annual dividends from the stock
+      const stockDividends = sharesOwned * dividendPerShare;
+
+      // Calculate annual PIR tax paid
+      const pirTaxPaid = stockDividends * pirTaxRate;
+
+      // Calculate after PIR tax stock dividends
+      const stockDividendsAfterTax = stockDividends - pirTaxPaid;
+
+      // Calculate annual interest from the bank deposit
+      const bankInterest = savingsAmount * interestRate;
+
+      // Calculate annual income tax paid
+      const incomeTaxPaid = bankInterest * incomeTaxRate;
+
+      // Calculate after income tax bank interest
+      const bankInterestAfterTax = bankInterest - incomeTaxPaid;
+
+      // Determine the result
+      let result;
+      if (stockDividendsAfterTax > bankInterestAfterTax) {
+        result = "After PIR tax, stock dividends are higher than after income tax bank interest.";
+        document.getElementById('result').style.color = "green";
+      } else if (stockDividendsAfterTax < bankInterestAfterTax) {
+        result = "After income tax, bank interest is higher than after PIR tax stock dividends.";
+        document.getElementById('result').style.color = "red";
+      } else {
+        result = "After PIR tax stock dividends and after income tax bank interest are equal.";
+        document.getElementById('result').style.color = "black";
+      }
+
+      // Display the results
+      document.getElementById('stockDividends').textContent = `Annual Stock Dividends: $${stockDividends.toFixed(2)}`;
+      document.getElementById('pirTaxPaid').textContent = `PIR Tax Paid: $${pirTaxPaid.toFixed(2)}`;
+      document.getElementById('stockDividendsAfterTax').textContent = `After PIR Tax Stock Dividends: $${stockDividendsAfterTax.toFixed(2)}`;
+
+      document.getElementById('bankInterest').textContent = `Annual Bank Interest: $${bankInterest.toFixed(2)}`;
+      document.getElementById('incomeTaxPaid').textContent = `Income Tax Paid: $${incomeTaxPaid.toFixed(2)}`;
+      document.getElementById('bankInterestAfterTax').textContent = `After Income Tax Bank Interest: $${bankInterestAfterTax.toFixed(2)}`;
+
+      document.getElementById('result').textContent = `Result: ${result}`;
+    }
+  </script>
+  <br>
+    <br>
+  <b><u>This is not financial advice. Please do your own research and consult a financial advisor before making any decisions.</b></u>
+  
+</body>
+</html>
